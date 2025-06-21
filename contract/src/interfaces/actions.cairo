@@ -20,7 +20,7 @@ pub trait IAction<T> {
 
     /// Allows a user to claim their reward from the most recently settled pool.
     /// Calculates reward based on stake and winning side, deducts protocol fee.
-    // fn claim_reward(ref self: T);
+    fn claim_reward(ref self: T, game_id: u64);
 
     /// Returns the current pool's information, or the most recent if none ongoing.
     fn get_current_pool_info(self: @T) -> Game;
@@ -32,26 +32,21 @@ pub trait IAction<T> {
     /// Returns the reward amount claimable by a user for a given pool.
     fn get_claimable_reward(self: @T, game_id: u64, user: ContractAddress) -> u256;
 
-    // --- Additional getters for UI/Dojo logic based on the provided UI screenshot ---
-
-    /// Returns a list of recent pools with their basic info (for the "POOLS" sidebar).
-    // fn get_recent_pools(self: @T, count: u32) -> Span<Game>;
-
     /// Returns the full list of users and their stakes for a given pool (for the "DEGEN CHAT" or
     /// pool details).
-    // fn get_pool_players(self: @T, game_id: u64) -> Span<(starknet::ContractAddress, u8, u256)>;
+    fn get_pool_players(self: @T, game_id: u64) -> Span<(ContractAddress, u8, u256)>;
 
     /// Returns the total number of pools ever created (for UI stats).
     fn get_total_pools(self: @T) -> u64;
 
-    // /// Returns the total amount staked across all pools (for UI stats).
-    // fn get_total_staked(self: @T) -> u256;
+    /// Returns the total amount staked across all pools (for UI stats).
+    fn get_total_staked(self: @T) -> u256;
 
-    // /// Returns the total number of bets placed (for UI stats).
-    // fn get_total_bets(self: @T) -> u64;
+    /// Returns the total number of bets placed (for UI stats).
+    fn get_total_bets(self: @T) -> u64;
 
-    // /// Returns the payout rate (for UI stats).
-    // fn get_payout_rate(self: @T) -> u64;
+    /// Returns the payout rate (for UI stats).
+    fn get_payout_rate(self: @T, game_id: u64, option: u8) -> u256;
 
     /// Returns whether there is an ongoing pool.
     fn get_ongoing_status(self: @T) -> bool;

@@ -61,7 +61,7 @@ mod tests {
     }
 
     pub fn USER1() -> ContractAddress {
-        contract_address_const::<'user2'>()
+        contract_address_const::<'user1'>()
     }
 
     pub fn USER2() -> ContractAddress {
@@ -128,7 +128,7 @@ mod tests {
         let stake_amount: u256 = 100_u256.into();
         game_actions.join_pool(0_u8, stake_amount);
         
-        // Player 2 (USER1/manager) joins with tails (option 1)
+        // // Player 2 (USER1/manager) joins with tails (option 1)
         testing::set_contract_address(USER1().into());
         let stake2: u256 = 50_u256.into(); 
         game_actions.join_pool(1_u8, stake2);

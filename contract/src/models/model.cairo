@@ -59,6 +59,10 @@ pub struct PoolPlayer {
     pub joined_at: u64,
     /// Has the player claimed their reward for this pool?
     pub claimed: bool,
+    /// Reward amount claimed by player.
+    pub reward_amount: u256,
+    /// User staked status
+    pub user_staked_status: bool,
 }
 
 /// Tracks the global pool/game counter for unique id generation
@@ -108,5 +112,13 @@ pub struct OngoingPool {
     #[key]
     pub universal_id: u64,
     pub ongoing_status: bool,
+}
+
+#[derive(Drop, Serde)]
+#[dojo::model]
+pub struct GamePlayers {
+    #[key]
+    pub game_id: u64,
+    pub players: Array<ContractAddress>,
 }
 

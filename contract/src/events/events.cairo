@@ -54,7 +54,9 @@ pub struct RewardClaimed {
     pub game_id: u64,
     #[key]
     pub player_address: ContractAddress,
-    pub amount: u256,
     pub claimed_at: u64,
+    pub reward_amount: u256,
+    pub stake_amount: u256,
+    pub winning_option: u8,
 }
 
