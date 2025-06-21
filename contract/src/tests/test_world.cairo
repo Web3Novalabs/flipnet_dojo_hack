@@ -27,6 +27,7 @@ mod tests {
                 TestResource::Model(m_ClaimableReward::TEST_CLASS_HASH),
                 TestResource::Model(m_OngoingPool::TEST_CLASS_HASH),
                 TestResource::Model(m_PoolPlayer::TEST_CLASS_HASH),
+                TestResource::Model(m_GamePlayers::TEST_CLASS_HASH),
                 // events
                 TestResource::Event(e_PoolCreated::TEST_CLASS_HASH),
                 TestResource::Event(e_PoolJoined::TEST_CLASS_HASH),

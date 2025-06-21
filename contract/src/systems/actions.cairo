@@ -95,6 +95,7 @@ pub mod actions {
             pool_id
         }
 
+        // todo: opn zeppelin erc20 strk integration to collect our money
         fn join_pool(ref self: ContractState, option: u8, amount: u256) {
             // --- Dojo logic: Join Pool Implementation ---
 
@@ -261,6 +262,7 @@ pub mod actions {
                 );
         }
 
+        // todo: opn zeppelin erc20 strk integration to give money to the player
         fn claim_reward(ref self: ContractState, game_id: u64) {
             let mut world = self.world_default();
             let caller = get_caller_address();
