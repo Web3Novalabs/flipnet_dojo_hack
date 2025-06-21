@@ -23,4 +23,5 @@ pub mod systems {
 
 pub mod tests {
     mod test_world;
+    mod integration_test;
 }

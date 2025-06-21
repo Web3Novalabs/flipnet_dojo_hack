@@ -237,7 +237,11 @@ pub mod actions {
             let random_num_u256: u256 = random_num.try_into().unwrap();
 
             // Determine winning option based on even/odd
-            let winning_option = if random_num_u256 % 2 == 0 { 0_u8 } else { 1_u8 };
+            let winning_option = if random_num_u256 % 2 == 0 {
+                0_u8
+            } else {
+                1_u8
+            };
             // Update the game with the winning option and set status to Revealed (2)
             game.winning_option = Option::Some(winning_option);
             game.status = 2_u8;
@@ -277,7 +281,6 @@ pub mod actions {
 
             // Assert player has a valid option
             assert(player.user_staked_status == true, 'Player has not staked');
-            
 
             // Get the winning option
             assert(game.winning_option.is_some(), 'No winning option set');
@@ -300,16 +303,17 @@ pub mod actions {
             world.write_model(@stats);
 
             // Emit reward claimed event
-            world.emit_event(
-                @RewardClaimed {
-                    game_id: game_id,
-                    player_address: caller,
-                    claimed_at: get_block_timestamp(),
-                    reward_amount: reward_amount,
-                    stake_amount: player.stake_amount,
-                    winning_option: winning_option,
-                }
-            );
+            world
+                .emit_event(
+                    @RewardClaimed {
+                        game_id: game_id,
+                        player_address: caller,
+                        claimed_at: get_block_timestamp(),
+                        reward_amount: reward_amount,
+                        stake_amount: player.stake_amount,
+                        winning_option: winning_option,
+                    },
+                );
         }
 
 
@@ -340,7 +344,9 @@ pub mod actions {
         }
 
 
-        fn get_pool_player(self: @ContractState, game_id: u64, player: ContractAddress) -> PoolPlayer {
+        fn get_pool_player(
+            self: @ContractState, game_id: u64, player: ContractAddress,
+        ) -> PoolPlayer {
             let mut world = self.world_default();
             world.read_model((game_id, player))
         }
@@ -390,7 +396,7 @@ pub mod actions {
         }
 
         fn get_pool_players(
-            self: @ContractState, game_id: u64
+            self: @ContractState, game_id: u64,
         ) -> Span<(ContractAddress, u8, u256)> {
             let mut world = self.world_default();
             let game_players: GamePlayers = world.read_model(game_id);
@@ -407,19 +413,16 @@ pub mod actions {
 
                 let player_option = match pool_player.option {
                     Option::Some(opt) => opt,
-                    Option::None => 2_u8, // Should not happen, 2 for invalid
+                    Option::None => 2_u8 // Should not happen, 2 for invalid
                 };
 
                 players_data
-                    .append(
-                        (pool_player.player_address, player_option, pool_player.stake_amount)
-                    );
+                    .append((pool_player.player_address, player_option, pool_player.stake_amount));
                 i += 1;
             };
 
             players_data.span()
         }
-
     }
 
 
@@ -455,6 +458,5 @@ pub mod actions {
             let odds = distributable_pool_amount * PRECISION / total_winning_stake;
             odds
         }
-
     }
 }
