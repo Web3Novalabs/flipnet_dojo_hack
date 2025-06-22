@@ -1,52 +1,77 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import App from "./App.tsx";
-
-// Dojo related imports
+// Dojo & Starknet
 import { init } from "@dojoengine/sdk";
 import { DojoSdkProvider } from "@dojoengine/sdk/react";
-import type { SchemaType } from "./dojo/bindings.ts";
-import { setupWorld } from "./dojo/contracts.ts"; // not working for now todo: file creation and impl
+import { dojoConfig } from "./dojo/dojoConfig";
+import type { SchemaType } from "./dojo/bindings";
+import { setupWorld } from "./dojo/contracts.gen";
+import StarknetProvider from "./dojo/starknet-provider";
 
+// App Entry
+import App from "./app/app";
 import "./index.css";
-import { dojoConfig } from "../dojoConfig.ts";
-import StarknetProvider from "./starknet-provider.tsx";
 
-/** 
- * Initializes and bootstraps the Dojo application.
- * Sets up the SDK, burner manager, and renders the root component.
- *
- * @throws {Error} If initialization fails
- */
+// Init Dojo with error handling
 async function main() {
+  try {
+    console.log("🚀 Initializing Dojo SDK...");
+
     const sdk = await init<SchemaType>({
-        client: {
-            worldAddress: dojoConfig.manifest.world.address,
-        },
-        domain: {
-            name: "WORLD_NAME",
-            version: "1.0",
-            chainId: "KATANA",
-            revision: "1",
-        },
+      client: {
+        toriiUrl: dojoConfig.toriiUrl,
+        worldAddress: dojoConfig.manifest.world.address,
+      },
+      domain: {
+        name: "DojoGameStarter",
+        version: "1.0",
+        chainId: "KATANA",
+        revision: "1",
+      },
     });
 
-    createRoot(document.getElementById("root")!).render(
-        <StrictMode>
-            <DojoSdkProvider
-                sdk={sdk}
-                dojoConfig={dojoConfig}
-                clientFn={setupWorld}
-            >
-                <StarknetProvider>
-                    <App />
-                </StarknetProvider>
-            </DojoSdkProvider>
-        </StrictMode>
+    console.log("✅ Dojo SDK initialized successfully");
+
+    const rootElement = document.getElementById("root");
+    if (!rootElement) throw new Error("Root element not found");
+
+    createRoot(rootElement).render(
+      <StrictMode>
+        <DojoSdkProvider sdk={sdk} dojoConfig={dojoConfig} clientFn={setupWorld}>
+          <StarknetProvider>
+            <App />
+          </StarknetProvider>
+        </DojoSdkProvider>
+      </StrictMode>
     );
+  } catch (error) {
+    console.error("❌ Failed to initialize Dojo:", error);
+
+    // Fallback: render without Dojo if it fails
+    const rootElement = document.getElementById("root");
+    if (rootElement) {
+      createRoot(rootElement).render(
+        <StrictMode>
+          <div className="min-h-screen bg-red-900 flex items-center justify-center">
+            <div className="text-white text-center p-8">
+              <h1 className="text-2xl font-bold mb-4">⚠️ Dojo Initialization Error</h1>
+              <p className="mb-4">Failed to connect to Dojo SDK</p>
+              <details className="text-left">
+                <summary className="cursor-pointer mb-2">Error Details:</summary>
+                <pre className="text-xs bg-black p-4 rounded overflow-auto">
+                  {error instanceof Error ? error.message : String(error)}
+                </pre>
+              </details>
+              <p className="text-sm mt-4 opacity-70">
+                Check your Dojo configuration and network connection
+              </p>
+            </div>
+          </div>
+        </StrictMode>
+      );
+    }
+  }
 }
 
-main().catch((error) => {
-    console.error("Failed to initialize the application:", error);
-});
+main();

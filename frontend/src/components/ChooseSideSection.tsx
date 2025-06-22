@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Target, Zap } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 const ChooseSideSection: React.FC = () => {
   const [selectedSide, setSelectedSide] = useState<"heads" | "tails" | null>(

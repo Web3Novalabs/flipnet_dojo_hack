@@ -1,0 +1,22 @@
+[world]
+name = "Dojo starter"
+description = "The official Dojo Starter guide, the quickest and most streamlined way to get your Dojo Autonomous World up and running. This guide will assist you with the initial setup, from cloning the repository to deploying your world."
+cover_uri = "file://assets/cover.png"
+icon_uri = "file://assets/icon.png"
+website = "https://github.com/dojoengine/dojo-starter"
+seed = "flipnet_sample1"
+
+[world.socials]
+x = "https://x.com/ohayo_dojo"
+discord = "https://discord.gg/FB2wR6uF"
+github = "https://github.com/dojoengine/dojo-starter"
+telegram = "https://t.me/dojoengine"
+
+[namespace]
+default = "flipnet_sample1"
+
+[env]
+rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+
+[writers]
+"flipnet_sample1" = ["flipnet_sample1-actions"]
