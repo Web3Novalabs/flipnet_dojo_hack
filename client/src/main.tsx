@@ -6,14 +6,14 @@ import App from "./App.tsx";
 // Dojo related imports
 import { init } from "@dojoengine/sdk";
 import { DojoSdkProvider } from "@dojoengine/sdk/react";
-import type { SchemaType } from "./typescript/models.gen.ts";
-import { setupWorld } from "./typescript/contracts.gen.ts";
+import type { SchemaType } from "./dojo/bindings.ts";
+import { setupWorld } from "./dojo/contracts.ts"; // not working for now todo: file creation and impl
 
 import "./index.css";
 import { dojoConfig } from "../dojoConfig.ts";
 import StarknetProvider from "./starknet-provider.tsx";
 
-/**
+/** 
  * Initializes and bootstraps the Dojo application.
  * Sets up the SDK, burner manager, and renders the root component.
  *
