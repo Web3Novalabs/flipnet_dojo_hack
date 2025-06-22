@@ -1,4 +1,3 @@
-// Test suite with integration tests
 #[cfg(test)]
 mod tests {
     // Importing necessary modules and traits for testing
