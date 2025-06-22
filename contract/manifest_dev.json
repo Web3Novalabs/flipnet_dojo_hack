@@ -1,7 +1,7 @@
 {
   "world": {
-    "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x65ee8188c171a836294feaa931f1c78b5f18957791c039e84ee40b4b3e85d3e",
+    "class_hash": "0x75fc75bcd1a7f8b4bf64b74978b0f89c8cee44bb755c1dae6f82284756451ec",
+    "address": "0x193e3437b867035092ddd89f1c09281e51e2d21692457d6e8e65f680ee05fe8",
     "seed": "dojo_starter",
     "name": "Dojo starter",
     "entrypoints": [
@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x62f6a8b1bc8f4b45985eaff3b00f85f370d6eb8dcb038072f3bf34fba0dd855",
-      "class_hash": "0x7e929027a6456c78b98bd4b54a4ab5db0058fae29e5c3a35d87aae49655236",
+      "address": "0x46717cafd3d9a3b9a88066140789b0b52a2a13eb9ec44d321e0ee817ea63f3b",
+      "class_hash": "0x57b963bea33a2f1a253abe9ee50159a4ceee2cddae503f5100d2ee76809c7ae",
       "abi": [
         {
           "type": "impl",
@@ -1368,52 +1368,426 @@
         {
           "type": "impl",
           "name": "ActionsImpl",
-          "interface_name": "dojo_starter::systems::actions::IActions"
+          "interface_name": "dojo_starter::interfaces::actions::IAction"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
         },
         {
           "type": "enum",
-          "name": "dojo_starter::models::Direction",
+          "name": "core::bool",
           "variants": [
             {
-              "name": "Left",
+              "name": "False",
               "type": "()"
             },
             {
-              "name": "Right",
-              "type": "()"
-            },
-            {
-              "name": "Up",
-              "type": "()"
-            },
-            {
-              "name": "Down",
+              "name": "True",
               "type": "()"
             }
           ]
         },
         {
+          "type": "enum",
+          "name": "core::option::Option::<core::integer::u8>",
+          "variants": [
+            {
+              "name": "Some",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "None",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo_starter::models::model::Game",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "num_players",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "num_heads",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "num_tails",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "total_stake_amount",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "total_heads_stake",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "total_tails_stake",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "status",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "is_live",
+              "type": "core::bool"
+            },
+            {
+              "name": "created_at",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "starts_at",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "ends_at",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "duration",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "winning_option",
+              "type": "core::option::Option::<core::integer::u8>"
+            },
+            {
+              "name": "manager_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "rewards_distributed",
+              "type": "core::bool"
+            },
+            {
+              "name": "payout_rate",
+              "type": "core::integer::u256"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::starknet::contract_address::ContractAddress, core::integer::u8, core::integer::u256)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::starknet::contract_address::ContractAddress, core::integer::u8, core::integer::u256)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo_starter::models::model::ProtocolStats",
+          "members": [
+            {
+              "name": "universal_id",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "total_pools",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "total_staked",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "total_bets",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "total_rewards",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "total_fees",
+              "type": "core::integer::u256"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo_starter::models::model::PoolPlayer",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "player_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "option",
+              "type": "core::option::Option::<core::integer::u8>"
+            },
+            {
+              "name": "stake_amount",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "joined_at",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "claimed",
+              "type": "core::bool"
+            },
+            {
+              "name": "reward_amount",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "user_staked_status",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
           "type": "interface",
-          "name": "dojo_starter::systems::actions::IActions",
+          "name": "dojo_starter::interfaces::actions::IAction",
           "items": [
             {
               "type": "function",
-              "name": "spawn",
+              "name": "create_pool",
+              "inputs": [
+                {
+                  "name": "duration",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "join_pool",
+              "inputs": [
+                {
+                  "name": "option",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "close_pool",
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
             },
             {
               "type": "function",
-              "name": "move",
+              "name": "reveal_outcome",
               "inputs": [
                 {
-                  "name": "direction",
-                  "type": "dojo_starter::models::Direction"
+                  "name": "game_id",
+                  "type": "core::integer::u64"
                 }
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "claim_reward",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_current_pool_info",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo_starter::models::model::Game"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_pool_status",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_claimable_reward",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "user",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_pool_players",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<(core::starknet::contract_address::ContractAddress, core::integer::u8, core::integer::u256)>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_total_pools",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_total_staked",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_total_bets",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u64"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_payout_rate",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "option",
+                  "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_ongoing_status",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_protocol_stats",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo_starter::models::model::ProtocolStats"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_pool_player",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "dojo_starter::models::model::PoolPlayer"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -1536,8 +1910,11 @@
       "tag": "dojo_starter-actions",
       "selector": "0x7a1c71029f2d0b38e3ac89b09931d08b6e48417e079c289ff19a8698d0cba33",
       "systems": [
-        "spawn",
-        "move",
+        "create_pool",
+        "join_pool",
+        "close_pool",
+        "reveal_outcome",
+        "claim_reward",
         "upgrade"
       ]
     }
@@ -1546,29 +1923,77 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x5dee089cbc4c8e6b4dbb08ee91ca9e275c5f5bb0be158ebae60ecd3b06989dd",
-      "tag": "dojo_starter-DirectionsAvailable",
-      "selector": "0x77844f1facb51e60e546a9832d56c6bd04fa23be4fd5b57290caae5e9a3c1e4"
+      "class_hash": "0x250731b8751855fc5466aef548cf100558e6597971721cea27ab055700228d",
+      "tag": "dojo_starter-ClaimableReward",
+      "selector": "0x33d1fb5aee5df60bd8dc7ce776cf16490393b1cbc09c3c7a5b54b5e7ed942db"
     },
     {
       "members": [],
-      "class_hash": "0x1a3faf9f018c2d792f06a9b52bd0b01b78bd652cb2dafbb3869f12814f0825b",
-      "tag": "dojo_starter-Moves",
-      "selector": "0x2a29373f1af8348bd366a990eb3a342ef2cbe5e85160539eaca3441a673f468"
+      "class_hash": "0x5d0db42bca88bf8f4ff77043c6d40334c6a221858df37241705d65733e12116",
+      "tag": "dojo_starter-Game",
+      "selector": "0x19e11cf1403e104998a158f43ec6ae232dc65cf5445bcb29fb9fb5b7bb6c171"
     },
     {
       "members": [],
-      "class_hash": "0x6dd8181e9e5a571c80803ab2adde6141f030decdef460106d757aa083f26a70",
-      "tag": "dojo_starter-Position",
-      "selector": "0x2ac8b4c190f7031b9fc44312e6b047a1dce0b3f2957c33a935ca7846a46dd5b"
+      "class_hash": "0x6e489de4c3708d3c373952051d000be4709f17be03296ce9adffff4c2672e34",
+      "tag": "dojo_starter-GameCounter",
+      "selector": "0x4a46573264e1a7c5616dff555497d8ed1e13e04668bb1179ded0ce91238e9cd"
+    },
+    {
+      "members": [],
+      "class_hash": "0xa7989d3eb9811566901f7ed45df76fe58302e83d7d3f882611a01893109ca8",
+      "tag": "dojo_starter-GamePlayers",
+      "selector": "0x244b7022b20989089877294f34e4780dbd9edee00878354702f3d8b287ce509"
+    },
+    {
+      "members": [],
+      "class_hash": "0x58636fae6ac03dfc08981d0768bcfefaaa5d2999454956d926db9c4fcbb52a4",
+      "tag": "dojo_starter-OngoingPool",
+      "selector": "0x5a0cba70f7303509d7c041184676641f1c1081e0b1f830e65b521edc2d1870c"
+    },
+    {
+      "members": [],
+      "class_hash": "0x65f5df9947c54e2ca98b0bd5647e91c93cb838836a512bb8b39338f2477b421",
+      "tag": "dojo_starter-PoolPlayer",
+      "selector": "0x1635ea2c3ca9ba5c7381cedb8efe9b19fb183339097b1856e08945807bf7bce"
+    },
+    {
+      "members": [],
+      "class_hash": "0x1095ee695a792365ad86e58c1676562d74c3ada2ed4634910a9243a05e04c50",
+      "tag": "dojo_starter-ProtocolStats",
+      "selector": "0x5930887c31042efcddb04a864ffa39de835d381265f6a2e158f939b0677977f"
     }
   ],
   "events": [
     {
       "members": [],
-      "class_hash": "0xe7390da745519ad5484c14f6c32caef28e53ed496e78c086a0689bb2007112",
-      "tag": "dojo_starter-Moved",
-      "selector": "0x504403e5c02b6442527721fc464d9ea5fc8f1ee600ab5ccd5c0845d36fd45f1"
+      "class_hash": "0x6b8ee586675846717543afb97b9e395ec2f4d4ff446003129b3128be0bfd8c9",
+      "tag": "dojo_starter-OutcomeRevealed",
+      "selector": "0x389c6d00a35d33a988c5bad4fb827ecd7aca13f79601b5da21e81cd641e99dc"
+    },
+    {
+      "members": [],
+      "class_hash": "0x4ec39876aa3cded48d55914ef6ebe226dcae8f55d24323307dc4a4c767d3449",
+      "tag": "dojo_starter-PoolClosed",
+      "selector": "0x44e8f167a871a3c32629199c8f7deec07671a6f3156ead4a3401ecaf6f80bae"
+    },
+    {
+      "members": [],
+      "class_hash": "0x65326962e6e6c81e87f2b82161521bca028de97e6bc7bd1c5fc5725864b1c74",
+      "tag": "dojo_starter-PoolCreated",
+      "selector": "0x59e3f7bcec655c939bd2c5c7827fb37ee178cdea7171a0149e327a9bc7dc136"
+    },
+    {
+      "members": [],
+      "class_hash": "0x588ab52e30ad3b8e960fdae318733e72be4532fc438e36e5a8ff6d09864ff08",
+      "tag": "dojo_starter-PoolJoined",
+      "selector": "0x3e1f8c318252999692b1bc67d97a619ae1f559f3c21f13b5e53fbfdf85f1f61"
+    },
+    {
+      "members": [],
+      "class_hash": "0x5983256936c9713cc45959ef3bf83086199cc71f52c9ea436224d349edb0d48",
+      "tag": "dojo_starter-RewardClaimed",
+      "selector": "0x79647c465f5e8a437657d01b4ba03ac73538e330323f7750068f9c5952e39f5"
     }
   ],
   "external_contracts": []
