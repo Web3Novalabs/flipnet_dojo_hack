@@ -27,6 +27,7 @@ mod tests {
                 TestResource::Model(m_ClaimableReward::TEST_CLASS_HASH),
                 TestResource::Model(m_OngoingPool::TEST_CLASS_HASH),
                 TestResource::Model(m_PoolPlayer::TEST_CLASS_HASH),
+                TestResource::Model(m_GamePlayers::TEST_CLASS_HASH),
                 // events
                 TestResource::Event(e_PoolCreated::TEST_CLASS_HASH),
                 TestResource::Event(e_PoolJoined::TEST_CLASS_HASH),
@@ -117,60 +118,62 @@ mod tests {
     #[available_gas(3000000000)]
     fn test_game_payout_logic() {
         let (world, game_actions) = setup();
-        
+
         // --- PHASE 1: Pool Creation ---
         testing::set_contract_address(USER1().into());
         let game_id = game_actions.create_pool(120);
-        
+
         // --- PHASE 2: Players Joining Pool ---
         // Player 1 (USER2) joins with heads (option 0)
         testing::set_contract_address(USER2().into());
         let stake_amount: u256 = 100_u256.into();
         game_actions.join_pool(0_u8, stake_amount);
-        
+
         // // Player 2 (USER1/manager) joins with tails (option 1)
         testing::set_contract_address(USER1().into());
-        let stake2: u256 = 50_u256.into(); 
+        let stake2: u256 = 50_u256.into();
         game_actions.join_pool(1_u8, stake2);
-        
+
         // Check initial payout_rate is 0 (default)
         let game_info_before: Game = game_actions.get_current_pool_info();
         assert(game_info_before.payout_rate == 0, 'Initial payout_rate should be 0');
-        
+
         // --- PHASE 3: Pool Closing ---
         // Fast forward time to after pool ends
         let game_info: Game = game_actions.get_current_pool_info();
         let end_time = game_info.ends_at;
         testing::set_block_timestamp(end_time + 1);
-        
+
         // Close the pool (status changes from 0 to 1)
         game_actions.close_pool();
-        
+
         // Check payout_rate is still 0 after closing
         let game_info_after_close: Game = game_actions.get_current_pool_info();
         assert(game_info_after_close.payout_rate == 0, 'rate should still be 0');
-        
+
         // --- PHASE 4: Outcome Revelation ---
         // Reveal the outcome (status changes from 1 to 2)
         game_actions.reveal_outcome(game_id);
-        
+
         // Check payout_rate is updated after revelation
         let game_info_after_reveal: Game = game_actions.get_current_pool_info();
         assert(game_info_after_reveal.payout_rate > 0, 'rate should be updated');
         assert(game_info_after_reveal.winning_option.is_some(), 'option should be set');
-        
+
         // Verify payout calculation based on the formula in actions.cairo
         let winning_option = game_info_after_reveal.winning_option.unwrap();
         let total_stake = game_info_after_reveal.total_stake_amount;
         let distributable_amount = total_stake * 1_u256 / 100_u256; // PROTOCOL_FEE = 1
-        
+
         let expected_payout_rate = if winning_option == 0_u8 {
             game_info_after_reveal.total_heads_stake / distributable_amount
         } else {
             game_info_after_reveal.total_tails_stake / distributable_amount
         };
-        
-        assert(game_info_after_reveal.payout_rate == expected_payout_rate, 'rate should match odds');
+
+        assert(
+            game_info_after_reveal.payout_rate == expected_payout_rate, 'rate should match odds',
+        );
     }
 
     #[test]
