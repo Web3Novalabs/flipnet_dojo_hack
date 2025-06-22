@@ -6,7 +6,7 @@ import { init } from "@dojoengine/sdk";
 import { DojoSdkProvider } from "@dojoengine/sdk/react";
 import { dojoConfig } from "./dojo/dojoConfig";
 import type { SchemaType } from "./dojo/bindings";
-import { setupWorld } from "./dojo/contracts.gen";
+import { setupWorld } from "./dojo/contracts.gen"; // not working for now todo: file creation and impl
 import StarknetProvider from "./dojo/starknet-provider";
 
 // App Entry
