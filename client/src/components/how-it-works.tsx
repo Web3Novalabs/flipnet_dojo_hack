@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HowItWorks = () => {
   return (
@@ -63,11 +64,11 @@ const HowItWorks = () => {
           </div>
 
           <div className="text-center mt-16">
-            {/* <Link href={"/flip"}> */}
+          <Link  to="/flip">
               <button className="bg-gradient-to-r from-indigo-600 to-purple-600 py-3 px-8 rounded-full font-semibold transition cursor-pointer transform hover:scale-105 hover:shadow-lg inline-flex items-center">
                 Start Playing Now <ArrowRight size={18} className="ml-2" />
               </button>
-            {/* </Link> */}
+            </Link>
           </div>
         </div>
       </section>

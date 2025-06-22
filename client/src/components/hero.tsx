@@ -1,5 +1,6 @@
 import { ArrowRight, Shield } from "lucide-react";
-import flip_img from "../../public/flip.jpg";
+import flip_img from "../assets/flip.jpg";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -18,11 +19,11 @@ const Hero = () => {
                   where players stake tokens to forecast event outcomes.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  {/* <Link href="/flip"> */}
+                  <Link  to="/flip">
                     <button className="bg-gradient-to-r from-indigo-600 to-purple-600 cursor-pointer py-3 px-8 rounded-full font-semibold transition transform hover:scale-105 hover:shadow-lg flex items-center justify-center">
                       Start Playing <ArrowRight size={18} className="ml-2" />
                     </button>
-                  {/* </Link> */}
+                  </Link>
 
                   <button className="bg-transparent border cursor-pointer border-indigo-500 py-3 px-8 rounded-full font-semibold transition hover:bg-indigo-500/20 flex items-center justify-center text-white">
                     Learn More

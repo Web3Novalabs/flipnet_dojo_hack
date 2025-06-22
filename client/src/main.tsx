@@ -11,7 +11,22 @@ import StarknetProvider from "./dojo/starknet-provider";
 
 // App Entry
 import App from "./app/app";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import Game from "./app/game";
+import NotFound from "./app/not_found";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement:<NotFound/>
+  },
+  {
+    path: "flip",
+    element:<Game/>
+  }
+]);
 
 // Init Dojo with error handling
 async function main() {
@@ -38,9 +53,13 @@ async function main() {
 
     createRoot(rootElement).render(
       <StrictMode>
-        <DojoSdkProvider sdk={sdk} dojoConfig={dojoConfig} clientFn={setupWorld}>
+        <DojoSdkProvider
+          sdk={sdk}
+          dojoConfig={dojoConfig}
+          clientFn={setupWorld}
+        >
           <StarknetProvider>
-            <App />
+            <RouterProvider router={router} />
           </StarknetProvider>
         </DojoSdkProvider>
       </StrictMode>
