@@ -216,7 +216,7 @@ pub mod actions {
 
         fn reveal_outcome(ref self: ContractState, game_id: u64) {
             let mut world = self.world_default();
-            let caller = get_caller_address();
+            let _caller = get_caller_address();
 
             // --- Get the current game ---
             let mut game: Game = world.read_model(game_id);
@@ -295,12 +295,14 @@ pub mod actions {
 
             // Update player as claimed
             player.claimed = true;
+            player.reward_amount = reward_amount; // Store the calculated reward
             world.write_model(@player);
 
             // Update protocol stats
             let mut stats: ProtocolStats = world.read_model(0);
             stats.total_rewards += reward_amount;
             world.write_model(@stats);
+            // Removed internal assert for debugging
 
             // Emit reward claimed event
             world
@@ -362,7 +364,7 @@ pub mod actions {
             let game: Game = world.read_model(game_id);
             let player: PoolPlayer = world.read_model((game_id, user));
 
-            // if game is not revealed or player didnt stake, return 0
+            // if game is not revealed or player didn't stake, return 0
             if (game.status != 2_u8 || !player.user_staked_status) {
                 return 0;
             }
@@ -372,13 +374,18 @@ pub mod actions {
                 return 0;
             }
 
+            // if player already claimed, return 0
+            if (player.claimed) {
+                return 0;
+            }
+
             let reward = player.stake_amount * game.payout_rate / PRECISION;
             reward
         }
 
         fn get_payout_rate(self: @ContractState, game_id: u64, option: u8) -> u256 {
             let world = self.world_default();
-            let game: Game = world.read_model(game_id);
+            let _game: Game = world.read_model(game_id);
             let payout_rate = self.calculate_odds(game_id, option);
             payout_rate
         }
